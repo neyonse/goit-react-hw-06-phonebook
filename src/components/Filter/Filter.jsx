@@ -1,12 +1,17 @@
 import css from './Filter.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { handleFilterChange } from 'redux/filterSlice';
+import { getFilter } from 'redux/selectors';
 import { LuSearch } from 'react-icons/lu';
-import PropTypes from 'prop-types';
 
-export function Filter({ value, onFilterChange }) {
+export function Filter() {
+  const dispatch = useDispatch();
+  const filterValue = useSelector(getFilter);
+
   const handleChange = e => {
     const { value } = e.currentTarget;
 
-    onFilterChange(value);
+    dispatch(handleFilterChange(value));
   };
 
   return (
@@ -19,14 +24,9 @@ export function Filter({ value, onFilterChange }) {
         id="search"
         type="search"
         placeholder="Search by name"
-        value={value}
+        value={filterValue}
         onChange={handleChange}
       />
     </div>
   );
 }
-
-Filter.propTypes = {
-  value: PropTypes.string.isRequired,
-  onFilterChange: PropTypes.func.isRequired,
-};

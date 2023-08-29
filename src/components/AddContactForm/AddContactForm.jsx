@@ -1,8 +1,9 @@
 import css from './AddContactForm.module.css';
+import { useDispatch, useSelector } from 'react-redux';
+import { addContact } from 'redux/contactsSlice';
+import { getContacts } from 'redux/selectors';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as yup from 'yup';
-import { nanoid } from 'nanoid';
-import PropTypes from 'prop-types';
 
 const initialValues = {
   name: '',
@@ -26,20 +27,32 @@ const schema = yup.object({
     .required(`Phone number field can't be empty`),
 });
 
-export function AddContactForm({ onAddContact }) {
-  const createNewContact = (name, number) => ({
-    id: nanoid(),
-    name: name.trim(),
-    number: number.trim(),
-  });
+export function AddContactForm() {
+  const dispatch = useDispatch();
+  const contactsFromState = useSelector(getContacts);
+
+  const isContactAlreadyAdded = name => {
+    const nameToLowerCase = name.toLowerCase();
+
+    return contactsFromState.findIndex(
+      contact => contact.name.toLowerCase() === nameToLowerCase
+    );
+  };
 
   const handleSubmit = (values, actions) => {
     const { resetForm } = actions;
     const name = values.name;
     const number = values.number;
-    const newContact = createNewContact(name, number);
 
-    onAddContact(newContact);
+    const isAdded = isContactAlreadyAdded(name);
+
+    if (isAdded !== -1) {
+      alert(`${name} is already in contacts`);
+      resetForm();
+      return;
+    }
+
+    dispatch(addContact({ name, number }));
     resetForm();
   };
 
@@ -71,7 +84,3 @@ export function AddContactForm({ onAddContact }) {
     </Formik>
   );
 }
-
-AddContactForm.propTypes = {
-  onAddContact: PropTypes.func.isRequired,
-};
