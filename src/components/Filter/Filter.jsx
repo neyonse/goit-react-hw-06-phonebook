@@ -1,6 +1,6 @@
 import css from './Filter.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { handleFilterChange } from 'redux/filterSlice';
+import { setFilter } from 'redux/filterSlice';
 import { getFilter } from 'redux/selectors';
 import { LuSearch } from 'react-icons/lu';
 
@@ -11,7 +11,7 @@ export function Filter() {
   const handleChange = e => {
     const { value } = e.currentTarget;
 
-    dispatch(handleFilterChange(value));
+    dispatch(setFilter(value));
   };
 
   return (

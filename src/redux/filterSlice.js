@@ -4,12 +4,10 @@ const filterSlice = createSlice({
   name: 'filter',
   initialState: '',
   reducers: {
-    handleFilterChange(state, action) {
-      return action.payload;
-    },
+    setFilter: (state, action) => action.payload,
   },
 });
 
-export const { handleFilterChange } = filterSlice.actions;
+export const { setFilter } = filterSlice.actions;
 
 export const filterReducer = filterSlice.reducer;

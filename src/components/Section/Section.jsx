@@ -13,6 +13,7 @@ export function Section({ className, title, children }) {
 }
 
 Section.propTypes = {
+  className: PropTypes.string.isRequired,
   title: PropTypes.string.isRequired,
   children: PropTypes.node.isRequired,
 };
